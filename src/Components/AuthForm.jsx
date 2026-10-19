@@ -1,6 +1,6 @@
 import { useForm } from '../hooks/useForm';
-import Button from '../components/ui/Button.jsx'
-import Input from '../components/ui/Input.jsx'
+import Button from '../Components/UI/Button.jsx'
+import Input from '../Components/UI/Input.jsx'
 import { useNavigate } from 'react-router-dom'
 import {useAuth} from '../hooks/useAuth.jsx'
 import {useState} from 'react'
