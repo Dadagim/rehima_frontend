@@ -1,226 +1,327 @@
-import { createElement } from "react";
-import {
-    FiActivity,
-    FiArrowUpRight,
-    FiClock,
-    FiFacebook,
-    FiHeart,
-    FiInstagram,
-    FiMapPin,
-    FiPhone,
-    FiTarget,
-    FiUsers,
-    FiYoutube,
-} from "react-icons/fi";
-
-const element = createElement;
+import { FiActivity, FiArrowUpRight, FiClock, FiHeart, FiInstagram, FiMapPin, FiTarget, FiUsers } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import aboutImage from "../../../assets/about.png";
+import coachImage from "../../../assets/choach2.png";
+import logoImage from "../../../assets/rhema-logo.svg";
 
 const training = [
-    { icon: FiActivity, number: "01", name: "Strength", description: "Real coaching and thoughtful programming. Meet yourself where you are." },
-    { icon: FiUsers, number: "02", name: "Group training", description: "Small, spirited classes that make showing up the best part of your day." },
-    { icon: FiTarget, number: "03", name: "Personal coaching", description: "A plan that fits your goals, your schedule, and the way you move." },
-    { icon: FiHeart, number: "04", name: "Recovery", description: "Make room to move well, rest up, and come back feeling better." },
+    {
+        icon: FiActivity,
+        number: "01",
+        name: "Gym",
+        description: "Train your way with quality equipment, space to move, and room to get stronger.",
+        image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000&q=85",
+        imageAlt: "Modern gym floor with strength training equipment",
+    },
+    {
+        icon: FiUsers,
+        number: "02",
+        name: "Kickboxing",
+        description: "Build power, confidence, and stamina with energetic coached sessions.",
+        image: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=1000&q=85",
+        imageAlt: "Athletes practicing a striking martial art",
+    },
+    {
+        icon: FiTarget,
+        number: "03",
+        name: "Jiu-jitsu",
+        description: "Learn practical grappling skills, technique, and control in a supportive class.",
+        image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1000&q=85",
+        imageAlt: "Martial artists training together on the mat",
+    },
+    {
+        icon: FiHeart,
+        number: "04",
+        name: "Martial arts",
+        description: "Improve coordination and discipline while learning skills at your own pace.",
+        image: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=1000&q=85",
+        imageAlt: "Athlete training in a martial arts class",
+    },
 ];
 
 const photos = [
-    { image: "/src/assets/about.png", alt: "Focused training in a well-lit gym", label: "Put in the work" },
-    { image: "/src/assets/about.png", alt: "Coach supporting an athlete at the gym", label: "Better, together" },
-    { image: "/src/assets/about.png", alt: "Movement and flexibility training", label: "Move freely" },
-    { image: "/src/assets/about.png", alt: "Weights ready for the next set", label: "Find your strength" },
-    { image: "/src/assets/about.png", alt: "An athlete building strength during a workout", label: "Your next chapter" },
+    {
+        image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1400&q=88",
+        alt: "Athlete training with weights in a gym",
+        label: "Strength in every rep",
+    },
+    {
+        image: "https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=1200&q=88",
+        alt: "Athlete working through a fitness session",
+        label: "Find your rhythm",
+    },
+    {
+        image: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=88",
+        alt: "Training space ready for a workout",
+        label: "Show up stronger",
+    },
 ];
 
-const instagramReels = [
-    { shortcode: "DbFojB9Iyh_", url: "https://www.instagram.com/reel/DbFojB9Iyh_/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" },
-    { shortcode: "DaKaRxtIZTT", url: "https://www.instagram.com/reel/DaKaRxtIZTT/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" },
-    { shortcode: "DaAaZfnIHNt", url: "https://www.instagram.com/reel/DaAaZfnIHNt/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" },
-    { shortcode: "DZih8lnRSOp", url: "https://www.instagram.com/reel/DZih8lnRSOp/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" },
-];
-
-const instagramPosts = [
-    { shortcode: "DZXYVBgiJYl", url: "https://www.instagram.com/p/DZXYVBgiJYl/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" },
-    { shortcode: "DaZxLqriAET", url: "https://www.instagram.com/p/DaZxLqriAET/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==" },
-];
-
-const instagramProfile = "https://www.instagram.com/rhema_gym?stkn=cGN3bDZhanNycGFx";
+const instagramProfile = "https://www.instagram.com/rhema_gym/";
 
 function Ticker() {
     const phrases = ["GOOD PEOPLE", "STRONGER EVERY DAY", "EVERY BODY BELONGS", "SHOW UP AS YOU ARE"];
-    const repeatedPhrases = [...phrases, ...phrases];
-    return element("div", { "aria-hidden": true, className: "ticker" },
-        element("div", { className: "ticker-track" }, repeatedPhrases.map((phrase, index) =>
-            element("span", { key: index }, phrase, " / "))));
+
+    return (
+        <div aria-hidden="true" className="ticker">
+            <div className="ticker-track">
+                {[...phrases, ...phrases].map((phrase, index) => (
+                    <span key={`${phrase}-${index}`}>{phrase} /</span>
+                ))}
+            </div>
+        </div>
+    );
 }
 
 function Services() {
-    return element("section", { "aria-labelledby": "services-title", className: "services-section section-dark", id: "services" },
-        element("div", { className: "section-inner" },
-            element("div", { className: "services-top" },
-                element("div", null,
-                    element("p", { className: "eyebrow" }, "Your goals, your pace, our people"),
-                    element("h2", { className: "section-heading", id: "services-title" }, "TRAIN YOUR ", element("span", null, "WAY."))),
-                element("p", { className: "services-intro" }, "Good programming meets you exactly where you are. There's room for everyone here.")),
-            element("div", { className: "service-grid" }, training.map(({ icon: Icon, number, name, description }) =>
-                element("article", { className: "service-card", key: number },
-                    element("span", { "aria-hidden": true, className: "service-icon" }, element(Icon)),
-                    element("span", { className: "service-number" }, "REHIMA / ", number),
-                    element("h3", null, name),
-                    element("p", null, description))))));
+    return (
+        <section aria-labelledby="services-title" className="services-section section-dark" id="services">
+            <div className="section-inner">
+                <div className="services-top">
+                    <div>
+                        <p className="eyebrow">Your goals, your pace, our people</p>
+                        <h2 className="section-heading" id="services-title">
+                            TRAIN YOUR <span>WAY.</span>
+                        </h2>
+                    </div>
+                    <p className="services-intro">
+                        Good programming meets you where you are. There&apos;s room for everyone here.
+                    </p>
+                </div>
+
+                <div className="service-grid">
+                    {training.map(({ icon: Icon, number, name, description, image, imageAlt }) => (
+                        <article className="service-card" key={number}>
+                            <div className="service-image">
+                                <img alt={imageAlt} loading="lazy" src={image} />
+                                <span aria-hidden="true" className="service-icon"><Icon /></span>
+                                <span className="service-number">RHEMA / {number}</span>
+                            </div>
+                            <div className="service-copy">
+                                <h3>{name}</h3>
+                                <p>{description}</p>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
 }
 
 function Coaches() {
-    const coaches = [
-        { name: "Mikael Bekele", role: "Strength & conditioning", image: "photo-1568602471122-7832951cc4c5" },
-        { name: "Rahel Kebede", role: "Group training", image: "photo-1544005313-94ddf0286df2" },
-        { name: "Dawit Alemu", role: "Mobility & recovery", image: "photo-1500648767791-00dcc994a43e" },
-    ];
-    return element("section", { "aria-labelledby": "coaches-title", className: "coaches-section section-dark", id: "coaches" },
-        element("div", { className: "section-inner" },
-            element("div", { className: "coaches-heading" },
-                element("div", null,
-                    element("p", { className: "eyebrow" }, "Good coaching changes everything"),
-                    element("h2", { className: "section-heading", id: "coaches-title" }, "MEET YOUR ", element("span", null, "COACHES."))),
-                element("p", { className: "coaches-intro" }, "Real people in your corner. Here to help you find your pace, build confidence, and keep showing up.")),
-            element("div", { className: "coach-community" },
-                element("div", { className: "coach-community-photo" },
-                    element("img", {
-                        alt: "The RHEMA coaching team and gym community in Hawassa",
-                        loading: "lazy",
-                        onError: (event) => {
-                            event.currentTarget.onerror = null;
-                            event.currentTarget.src = "src/assets/imgHero.jfif";
-                        },
-                        src: "/rhema-community.jpg",
-                    }),
-                    element("span", { className: "coach-photo-label" }, "RHEMA / HAWASSA")),
-                element("div", { className: "coach-community-copy" },
-                    element("span", { className: "coach-index" }, "01 / OUR COMMUNITY"),
-                    element("h3", null, "BETTER,", element("br"), "TOGETHER."),
-                    element("p", null, "Every strong session starts with people who make you feel welcome. Meet the crew that brings the energy to RHEMA."),
-                    element("a", { className: "text-link", href: "#contact" }, "COME MEET THE TEAM ", element(FiArrowUpRight)))),
-            element("div", { className: "coach-grid" }, coaches.map(({ name, role }, index) =>
-                element("article", { className: "coach-card", key: name },
-                    element("div", { className: "coach-portrait" },
-                        element("img", { alt: `${name}, RHEMA ${role} coach`, loading: "lazy", src: `./src/assets/choach2.png` }),
-                        element("span", null, `0${index + 1}`)),
-                    element("div", { className: "coach-card-copy" },
-                        element("h3", null, name),
-                        element("p", null, role)))))));
+    return (
+        <section aria-labelledby="coaches-title" className="coaches-section section-dark" id="coaches">
+            <div className="section-inner">
+                <div className="coaches-heading">
+                    <div>
+                        <p className="eyebrow">Good coaching changes everything</p>
+                        <h2 className="section-heading" id="coaches-title">
+                            YOU&apos;RE IN <span>GOOD HANDS.</span>
+                        </h2>
+                    </div>
+                    <p className="coaches-intro">
+                        Real people in your corner, here to help you build confidence and keep showing up.
+                    </p>
+                </div>
+
+                <article className="coach-community">
+                    <div className="coach-community-photo">
+                        <img
+                            alt="A RHEMA coach training with members"
+                            loading="lazy"
+                            src={coachImage}
+                        />
+                        <span className="coach-photo-label">RHEMA / HAWASSA</span>
+                    </div>
+                    <div className="coach-community-copy">
+                        <span className="coach-index">01 / OUR COMMUNITY</span>
+                        <h3>BETTER,<br />TOGETHER.</h3>
+                        <p>
+                            Every strong session starts with people who make you feel welcome.
+                            Come meet the team and find a pace that feels right for you.
+                        </p>
+                        <a className="text-link" href="#contact">
+                            COME MEET THE TEAM <FiArrowUpRight aria-hidden="true" />
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    );
 }
 
 function Gallery() {
-    return element("section", { "aria-labelledby": "gallery-title", className: "gallery-section section-light", id: "gallery" },
-        element("div", { className: "section-inner" },
-            element("div", { className: "gallery-top" },
-                element("div", null,
-                    element("p", { className: "eyebrow" }, "Good energy lives here"),
-                    element("h2", { className: "section-heading", id: "gallery-title" }, "A LOOK ", element("span", null, "INSIDE."))),
-                element("a", { className: "text-link", href: "#contact" }, "COME SEE FOR YOURSELF ", element(FiArrowUpRight))),
-            element("div", { className: "gallery-grid" }, photos.map(({ image, alt, label }, index) =>
-                element("figure", { className: "gallery-item", key: image },
-                    element("img", { alt, loading: "lazy", src: `/src/assets/choach2.png` }),
-                    element("figcaption", { className: "gallery-label" },
-                        element("span", null, `0${index + 1} / ${label}`),
-                        element(FiArrowUpRight, { "aria-hidden": true })))))));
+    return (
+        <section aria-labelledby="gallery-title" className="gallery-section section-light" id="gallery">
+            <div className="section-inner">
+                <div className="gallery-top">
+                    <div>
+                        <p className="eyebrow">Good energy lives here</p>
+                        <h2 className="section-heading" id="gallery-title">
+                            A LOOK <span>INSIDE.</span>
+                        </h2>
+                    </div>
+                    <a className="text-link" href="#contact">
+                        COME SEE FOR YOURSELF <FiArrowUpRight aria-hidden="true" />
+                    </a>
+                </div>
+
+                <div className="gallery-grid">
+                    {photos.map(({ image, alt, label }, index) => (
+                        <figure className="gallery-item" key={label}>
+                            <img alt={alt} loading="lazy" src={image} />
+                            <figcaption className="gallery-label">
+                                <span className="gallery-caption-copy">
+                                    <span className="gallery-photo-number">RHEMA / 0{index + 1}</span>
+                                    <span className="gallery-photo-title">{label}</span>
+                                </span>
+                                <FiArrowUpRight aria-hidden="true" />
+                            </figcaption>
+                        </figure>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
 }
 
-function InstagramReels() {
-    return element("section", { "aria-labelledby": "reels-title", className: "instagram-reels", id: "instagram-reels" },
-        element("div", { className: "section-inner" },
-            element("div", { className: "reels-heading" },
-                element("div", null,
-                    element("p", { className: "eyebrow" }, "Straight from the gym floor"),
-                    element("h2", { className: "section-heading", id: "reels-title" }, "RHEMA IN ", element("span", null, "MOTION."))),
-                element("a", { className: "instagram-profile", href: instagramProfile, rel: "noreferrer", target: "_blank" },
-                    element(FiInstagram, { "aria-hidden": true }), " FOLLOW @RHEMA_GYM ", element(FiArrowUpRight, { "aria-hidden": true }))),
-            element("div", { className: "reels-grid" }, instagramReels.map(({ shortcode, url }, index) =>
-                element("article", { className: "reel-item", key: shortcode },
-                    element("iframe", {
-                        allow: "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share",
-                        allowFullScreen: true,
-                        loading: "lazy",
-                        referrerPolicy: "strict-origin-when-cross-origin",
-                        src: `https://www.instagram.com/reel/${shortcode}/embed/`,
-                        title: `RHEMA Gym Instagram Reel ${index + 1}`,
-                    }),
-                    element("a", { className: "reel-link", href: url, rel: "noreferrer", target: "_blank" },
-                        "OPEN REEL ON INSTAGRAM ", element(FiArrowUpRight, { "aria-hidden": true })))))));
-}
-
-function InstagramPosts() {
-    return element("section", { "aria-labelledby": "instagram-posts-title", className: "instagram-posts", id: "instagram-posts" },
-        element("div", { className: "section-inner" },
-            element("div", { className: "reels-heading" },
-                element("div", null,
-                    element("p", { className: "eyebrow" }, "Life at RHEMA, lately"),
-                    element("h2", { className: "section-heading", id: "instagram-posts-title" }, "FROM THE ", element("span", null, "COMMUNITY."))),
-                element("a", { className: "instagram-profile", href: instagramProfile, rel: "noreferrer", target: "_blank" },
-                    element(FiInstagram, { "aria-hidden": true }), " FOLLOW @RHEMA_GYM ", element(FiArrowUpRight, { "aria-hidden": true }))),
-            element("div", { className: "instagram-posts-grid" }, instagramPosts.map(({ shortcode, url }) =>
-                element("article", { className: "instagram-post", key: shortcode },
-                    element("iframe", {
-                        loading: "lazy",
-                        referrerPolicy: "strict-origin-when-cross-origin",
-                        src: `https://www.instagram.com/p/${shortcode}/embed/`,
-                        title: `RHEMA Gym Instagram photo post ${shortcode}`,
-                    }),
-                    element("a", { className: "reel-link", href: url, rel: "noreferrer", target: "_blank" },
-                        "VIEW POST ON INSTAGRAM ", element(FiArrowUpRight, { "aria-hidden": true })))))));
+function Community() {
+    return (
+        <section aria-labelledby="community-title" className="community-section">
+            <div className="community-card">
+                <img
+                    alt="Members sharing a moment together"
+                    className="community-image"
+                    loading="lazy"
+                    src={aboutImage}
+                />
+                <div className="community-copy">
+                    <p className="eyebrow">Life at RHEMA, lately</p>
+                    <h2 className="section-heading" id="community-title">
+                        YOUR PEOPLE<br />ARE <span>HERE.</span>
+                    </h2>
+                    <p>
+                        Follow along for a closer look at the people, energy, and training
+                        that make our community special.
+                    </p>
+                    <a
+                        className="instagram-profile"
+                        href={instagramProfile}
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        <FiInstagram aria-hidden="true" />
+                        FOLLOW @RHEMA_GYM
+                        <FiArrowUpRight aria-hidden="true" />
+                    </a>
+                </div>
+            </div>
+        </section>
+    );
 }
 
 function Contact() {
     const contactDetails = [
         { icon: FiMapPin, title: "FIND THE CLUB", detail: "RHEMA Fitness Centre", extra: "Hawassa, Ethiopia" },
-        { icon: FiPhone, title: "GIVE US A RING", detail: "+1 (555) 010-2040", phone: "tel:+15550102040" },
-        { icon: FiClock, title: "WHEN WE'RE HERE", detail: "Monday-Friday: 5 am-10 pm", extra: "Saturday-Sunday: 7 am-6 pm" },
+        { icon: FiClock, title: "PLAN YOUR VISIT", detail: "Come by and meet the team", extra: "Ask us about today's sessions" },
     ];
-    return element("section", { "aria-labelledby": "contact-title", className: "contact-section", id: "contact" },
-        element("div", { className: "contact-inner" },
-            element("div", null,
-                element("p", { className: "eyebrow" }, "Your first workout starts right here"),
-                element("h2", { className: "contact-heading", id: "contact-title" }, "COME AS", element("br"), "YOU ARE."),
-                element("p", { className: "contact-blurb" }, "Curious about a class? Want to take a look around? Drop in, give us a call, or send a note. We'll save you a spot."),
-                element("a", { className: "button-dark", href: "mailto:hello@rehimagym.com" }, "SAY HELLO ", element(FiArrowUpRight))),
-            element("address", { className: "contact-details" }, contactDetails.map(({ icon: Icon, title, detail, extra, phone }) =>
-                element("div", { className: "contact-detail", key: title },
-                    element("span", { "aria-hidden": true, className: "contact-detail-icon" }, element(Icon)),
-                    element("span", null,
-                        element("strong", null, title),
-                        phone ? element("a", { href: phone }, detail) : detail,
-                        extra && element("span", null, element("br"), extra))))),
-        ),
-        element("div", { className: "map-panel" },
-            element("iframe", {
-                allowFullScreen: true,
-                loading: "lazy",
-                referrerPolicy: "no-referrer-when-downgrade",
-                src: "https://maps.google.com/maps?q=7.04002,38.4786563&z=15&output=embed",
-                title: "Map showing RHEMA Fitness Centre in Hawassa, Ethiopia",
-            }),
-            element("a", { className: "map-directions", href: "https://maps.app.goo.gl/BGsjgKbsVCrxQ4FR8", rel: "noreferrer", target: "_blank" }, "GET DIRECTIONS ", element(FiArrowUpRight))));
+
+    return (
+        <section aria-labelledby="contact-title" className="contact-section" id="contact">
+            <div className="contact-inner">
+                <div>
+                    <p className="eyebrow">Your first workout starts right here</p>
+                    <h2 className="contact-heading" id="contact-title">
+                        COME AS<br />YOU ARE.
+                    </h2>
+                    <p className="contact-blurb">
+                        Curious about a class or want to take a look around? Visit us or
+                        send us a message. We&apos;ll help you get started.
+                    </p>
+                    <a
+                        className="button-dark"
+                        href={instagramProfile}
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        MESSAGE US ON INSTAGRAM <FiArrowUpRight aria-hidden="true" />
+                    </a>
+                </div>
+
+                <address className="contact-details">
+                    {contactDetails.map(({ icon: Icon, title, detail, extra }) => (
+                        <div className="contact-detail" key={title}>
+                            <span aria-hidden="true" className="contact-detail-icon"><Icon /></span>
+                            <span>
+                                <strong>{title}</strong>
+                                {detail}
+                                <span><br />{extra}</span>
+                            </span>
+                        </div>
+                    ))}
+                </address>
+            </div>
+            <div className="map-panel">
+                <iframe
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src="https://maps.google.com/maps?q=7.04002,38.4786563&z=15&output=embed"
+                    title="Map showing RHEMA Fitness Centre in Hawassa, Ethiopia"
+                />
+                <a
+                    className="map-directions"
+                    href="https://maps.app.goo.gl/BGsjgKbsVCrxQ4FR8"
+                    rel="noreferrer"
+                    target="_blank"
+                >
+                    GET DIRECTIONS <FiArrowUpRight aria-hidden="true" />
+                </a>
+            </div>
+        </section>
+    );
 }
 
 function Footer() {
-    return element("footer", { className: "footer" },
-        element("div", { className: "footer-inner" },
-            element("div", null,
-                element("a", { "aria-label": "RHEMA Fitness Centre home", className: "wordmark", href: "#home" },
-                    element("img", { alt: "RHEMA Fitness Centre", className: "brand-logo", src: "/rhema-logo.svg" })),
-                element("p", { className: "footer-tagline" }, "Built by good people. Made for everybody.")),
-            element("nav", { "aria-label": "Footer navigation", className: "footer-nav" },
-                element("a", { href: "#home" }, "Home"),
-                element("a", { href: "#about" }, "Our story"),
-                element("a", { href: "#services" }, "Training"),
-                element("a", { href: "#gallery" }, "The club"),
-                element("a", { href: "#contact" }, "Come say hi"),
-                element("a", { href: "/auth" }, "Sign in / Register")),
-            element("div", { "aria-label": "Social media", className: "footer-social" },
-                element("a", { "aria-label": "RHEMA Gym on Instagram", href: instagramProfile, rel: "noreferrer", target: "_blank" }, element(FiInstagram)),
-                element("a", { "aria-label": "Facebook", href: "https://www.facebook.com/" }, element(FiFacebook)),
-                element("a", { "aria-label": "YouTube", href: "https://www.youtube.com/" }, element(FiYoutube)))),
-        element("div", { className: "footer-bottom" },
-            element("span", null, `\u00a9 ${new Date().getFullYear()} RHEMA FITNESS CENTRE`),
-            element("span", null, "SHOW UP AS YOU ARE. LEAVE A LITTLE STRONGER.")));
+    return (
+        <footer className="footer">
+            <div className="footer-inner">
+                <div>
+                    <a aria-label="RHEMA Fitness Centre home" className="wordmark" href="#home">
+                        <img alt="RHEMA Fitness Centre" className="brand-logo" src={logoImage} />
+                    </a>
+                    <p className="footer-tagline">Built by good people. Made for everybody.</p>
+                </div>
+
+                <nav aria-label="Footer navigation" className="footer-nav">
+                    <a href="#home">Home</a>
+                    <a href="#about">Our story</a>
+                    <a href="#services">Training</a>
+                    <a href="#gallery">The club</a>
+                    <a href="#contact">Come say hi</a>
+                    <Link to="/login">Sign in</Link>
+                    <Link to="/register">Join the club</Link>
+                </nav>
+
+                <div aria-label="Social media" className="footer-social">
+                    <a
+                        aria-label="RHEMA Gym on Instagram"
+                        href={instagramProfile}
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        <FiInstagram aria-hidden="true" />
+                    </a>
+                </div>
+            </div>
+
+            <div className="footer-bottom">
+                <span>© {new Date().getFullYear()} RHEMA FITNESS CENTRE</span>
+                <span>SHOW UP AS YOU ARE. LEAVE A LITTLE STRONGER.</span>
+            </div>
+        </footer>
+    );
 }
 
-export { Coaches, Contact, Footer, Gallery, InstagramPosts, InstagramReels, Services, Ticker };
+export { Coaches, Community, Contact, Footer, Gallery, Services, Ticker };

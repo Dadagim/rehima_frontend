@@ -1,15 +1,20 @@
 import { useCallback, useEffect, useState } from "react";
 import { AuthContext } from "./useAuth.jsx";
-import { api } from "../api/client.js";
-import { useLocalStorage } from "../hooks/useLocalStorage.js";
+import {
+    api,
+    clearAuthTokens,
+    getRefreshToken,
+    hasAuthTokens,
+    setAuthTokens,
+} from "../api/client.js";
 
 export function AuthContextProvider({ children }) {
-    const [user, setUser] = useLocalStorage("savedUser", null);
-    const [, setAccess] = useLocalStorage("access", null);
-    const [, setRefresh] = useLocalStorage("refresh", null);
-    const [authReady, setAuthReady] = useState(
-        () => !localStorage.getItem("access") && !localStorage.getItem("refresh"),
-    );
+    const [authState, setAuthState] = useState(() => ({
+        user: null,
+        error: null,
+        ready: !hasAuthTokens(),
+    }));
+    const [isSignedIn, setIsSignedIn] = useState(hasAuthTokens);
 
     const refreshUser = useCallback(async () => {
         const response = await api.get("/users/me/");
@@ -20,93 +25,107 @@ export function AuthContextProvider({ children }) {
             memberships: data.memberships,
             check_ins: data.check_in,
         };
-        setUser(authenticatedUser);
+        setIsSignedIn(true);
+        setAuthState({ user: authenticatedUser, error: null, ready: true });
         return authenticatedUser;
-    }, [setUser]);
+    }, []);
 
     useEffect(() => {
         let active = true;
-        const accessToken = localStorage.getItem("access");
-        const refreshToken = localStorage.getItem("refresh");
+        const handleExpired = () => {
+            if (active) {
+                setIsSignedIn(false);
+                setAuthState({ user: null, error: null, ready: true });
+            }
+        };
+        window.addEventListener("auth:expired", handleExpired);
 
-        if (!accessToken && !refreshToken) {
-            return () => {
-                active = false;
-            };
+        if (hasAuthTokens()) {
+            Promise.resolve()
+                .then(refreshUser)
+                .catch((error) => {
+                    if (active) {
+                        setAuthState({
+                            user: null,
+                            error: error.response?.data?.detail ||
+                                "Your account could not be loaded. Please try again.",
+                            ready: true,
+                        });
+                        setIsSignedIn(hasAuthTokens());
+                    }
+                });
         }
-
-        refreshUser()
-            .catch((error) => {
-                if (error.response?.status === 401) {
-                    setAccess(null);
-                    setRefresh(null);
-                    setUser(null);
-                }
-            })
-            .finally(() => {
-                if (active) {
-                    setAuthReady(true);
-                }
-            });
-
         return () => {
             active = false;
+            window.removeEventListener("auth:expired", handleExpired);
         };
-    }, [refreshUser, setAccess, setRefresh, setUser]);
+    }, [refreshUser]);
 
-    useEffect(() => {
-        function handleAuthExpired() {
-            setAccess(null);
-            setRefresh(null);
-            setUser(null);
-        }
-
-        window.addEventListener("auth:expired", handleAuthExpired);
-        return () => window.removeEventListener("auth:expired", handleAuthExpired);
-    }, [setAccess, setRefresh, setUser]);
-
-    async function login({ username, password }) {
-        logout();
+    const authenticate = useCallback(async (endpoint, credentials) => {
+        const response = await api.post(endpoint, credentials);
+        setAuthTokens(response.data);
+        setIsSignedIn(true);
+        setAuthState({ user: null, error: null, ready: false });
         try {
-            const response = await api.post("/api/auth/token/", { username, password });
-            setAccess(response.data.access);
-            setRefresh(response.data.refresh);
-            await refreshUser();
+            return await refreshUser();
         } catch (error) {
-            logout();
+            setAuthState({
+                user: null,
+                error: error.response?.data?.detail ||
+                    "Your account could not be loaded. Please try again.",
+                ready: true,
+            });
             throw error;
         }
-    }
+    }, [refreshUser]);
 
-    async function register(data) {
-        const formData = new FormData();
-        Object.entries(data).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) {
-                formData.append(key, value);
+    const login = useCallback(
+        (credentials) => authenticate("/users/auth/login/", credentials),
+        [authenticate],
+    );
+    const register = useCallback(
+        (credentials) => authenticate("/users/auth/register/", credentials),
+        [authenticate],
+    );
+
+    const logout = useCallback(async () => {
+        const refresh = getRefreshToken();
+        try {
+            if (refresh) {
+                await api.post("/users/auth/logout/", { refresh });
             }
-        });
+        } finally {
+            clearAuthTokens();
+            setIsSignedIn(false);
+            setAuthState({ user: null, error: null, ready: true });
+        }
+    }, []);
 
-        await api.post("/users/register/", formData);
-        return login({ username: data.username, password: data.password });
-    }
-
-    function logout() {
-        setAccess(null);
-        setRefresh(null);
-        setUser(null);
-    }
+    const retryProfile = useCallback(async () => {
+        try {
+            return await refreshUser();
+        } catch (error) {
+            setAuthState({
+                user: null,
+                error: error.response?.data?.detail ||
+                    "Your account could not be loaded. Please try again.",
+                ready: true,
+            });
+            return null;
+        }
+    }, [refreshUser]);
 
     return (
         <AuthContext.Provider
             value={{
-                user: localStorage.getItem("access") || localStorage.getItem("refresh")
-                    ? user
-                    : null,
-                authReady,
+                user: authState.user,
+                authReady: authState.ready,
+                isSignedIn,
+                authError: authState.error,
+                logout,
                 login,
                 register,
-                logout,
-                refreshUser,
+                refreshUser: retryProfile,
             }}
         >
             {children}

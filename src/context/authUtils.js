@@ -7,3 +7,13 @@ export function isStaffUser(user) {
         STAFF_ROLES.has(user?.profile?.role),
     );
 }
+
+export function hasCompletedProfile(user) {
+    const profile = user?.profile;
+    return Boolean(
+        profile?.full_name?.trim() &&
+        profile?.phone_number?.trim() &&
+        profile?.attendance_plan_per_week?.trim() &&
+        profile?.profile,
+    );
+}

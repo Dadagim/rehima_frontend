@@ -3,17 +3,22 @@ import { FiArrowUpRight, FiMenu, FiX } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { isStaffUser } from "../../../context/authUtils.js";
+import logoImage from "../../../assets/logo.png";
 
 function NavBar() {
     const [isOpen, setIsOpen] = useState(false);
-    const { user, authReady, logout } = useAuth();
+    const { user, authReady, isSignedIn, logout } = useAuth();
     const navigate = useNavigate();
-    const activeUser = authReady ? user : null;
+    const activeUser = authReady && isSignedIn ? user : null;
     const staff = isStaffUser(activeUser);
     const closeMenu = () => setIsOpen(false);
 
-    function handleLogout() {
-        logout();
+    async function handleLogout() {
+        try {
+            await logout();
+        } catch {
+            console.error("The server could not revoke the refresh token; local tokens were cleared.");
+        }
         closeMenu();
         navigate("/");
     }
@@ -24,11 +29,12 @@ function NavBar() {
                 <Link aria-label="RHEMA Fitness Centre home" to="/" onClick={closeMenu}>
                     <img
                         alt="RHEMA Fitness Centre"
-                        className="h-16 w-auto"
-                        src="/src/assets/logo.png"
+                        className="h-14 w-auto object-contain md:h-16"
+                        src={logoImage}
                     />
                 </Link>
                 <button
+                    aria-controls="main-navigation"
                     aria-expanded={isOpen}
                     aria-label={isOpen ? "Close navigation" : "Open navigation"}
                     className="grid size-11 place-items-center border border-black/15 text-xl md:hidden"
@@ -39,9 +45,10 @@ function NavBar() {
                 </button>
                 <nav
                     aria-label="Main navigation"
-                    className={`${isOpen ? "flex" : "hidden"} absolute left-0 bg-white z-1000 right-0 top-full flex-col gap-0 border-b border-black/10 bg-paper px-5 pb-5 pt-2 text-sm font-semibold md:static md:flex md:flex-row md:items-center md:gap-7 md:border-0 md:bg-transparent md:p-0`}
+                    className={`${isOpen ? "flex" : "hidden"} bg-white absolute left-0 right-0 top-full z-50 flex-col gap-0 border-b border-black/10 bg-paper px-5 pb-5 pt-2 text-sm font-semibold shadow-lg md:static md:flex md:flex-row md:items-center md:gap-7 md:border-0 md:bg-transparent md:p-0 md:shadow-none`}
+                    id="main-navigation"
                 >
-                    {activeUser ? (
+                    {isSignedIn ? (
                         <>
                             <Link className="py-3 md:py-0" to="/profile" onClick={closeMenu}>
                                 My profile

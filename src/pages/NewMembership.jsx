@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FiArrowLeft, FiArrowRight, FiCalendar, FiCheckCircle, FiCreditCard, FiDollarSign, FiInfo, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { api } from "../api/client.js";
 
@@ -87,23 +88,34 @@ function NewMembership() {
     const selectedMember = members.find((member) => String(member.user) === memberId);
 
     return (
-        <main className="mx-auto max-w-5xl px-5 py-10 md:px-8">
+        <main className="member-page">
+            <div className="mx-auto max-w-5xl px-5 py-10 md:px-8">
             <div className="mb-8">
-                <Link className="text-sm font-semibold text-orange-800 hover:underline" to="/profile">
-                    ← Back to profile
+                <Link className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-orange-700" to="/profile">
+                    <FiArrowLeft aria-hidden="true" /> Back to profile
                 </Link>
-                <p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-orange-800">
-                    Staff tools
-                </p>
-                <h1 className="mt-2 text-3xl font-bold">Create a membership</h1>
-                <p className="mt-2 max-w-2xl text-slate-600">
-                    Choose a member and plan. Their membership dates and individual QR code will be generated automatically.
-                </p>
+                <section className="relative mt-5 overflow-hidden rounded-[32px] bg-gradient-to-br from-[#090d13] via-[#111827] to-[#252c36] p-7 text-white shadow-[0_24px_70px_rgba(15,23,42,0.22)] md:p-9">
+                    <div className="absolute -right-10 -top-16 h-56 w-56 rounded-full bg-orange-500/25 blur-3xl" />
+                    <div className="relative z-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+                        <div>
+                            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-orange-300">
+                                <FiCreditCard aria-hidden="true" /> Staff tools
+                            </p>
+                            <h1 className="mt-3 text-3xl font-black tracking-tight md:text-5xl">Create a membership</h1>
+                            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 md:text-base">
+                                Choose a member and plan. We&apos;ll prepare their access details and unique QR code.
+                            </p>
+                        </div>
+                        <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-orange-300">
+                            <FiCreditCard aria-hidden="true" size={30} />
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
                 <form
-                    className="space-y-6 rounded-3xl border border-black/10 bg-white p-6 shadow-sm md:p-8"
+                    className="space-y-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_14px_40px_rgba(15,23,42,0.07)] md:p-8"
                     onSubmit={handleSubmit}
                 >
                     {error && (
@@ -117,11 +129,11 @@ function NewMembership() {
                     ) : (
                         <>
                             <div>
-                                <label className="mb-2 block text-sm font-semibold" htmlFor="member">
-                                    Member
+                                <label className="mb-2 flex items-center gap-2 text-sm font-bold text-slate-800" htmlFor="member">
+                                <FiUser aria-hidden="true" className="text-orange-600" /> Member
                                 </label>
                                 <select
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-3 py-3 focus:outline-none focus:ring-2 focus:ring-orange"
+                                className="min-h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-slate-800 outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
                                     id="member"
                                     onChange={(event) => setMemberId(event.target.value)}
                                     required
@@ -142,11 +154,11 @@ function NewMembership() {
                             </div>
 
                             <div>
-                                <label className="mb-2 block text-sm font-semibold" htmlFor="plan">
-                                    Membership plan
+                                <label className="mb-2 flex items-center gap-2 text-sm font-bold text-slate-800" htmlFor="plan">
+                                <FiCreditCard aria-hidden="true" className="text-orange-600" /> Membership plan
                                 </label>
                                 <select
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-3 py-3 focus:outline-none focus:ring-2 focus:ring-orange"
+                                className="min-h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-slate-800 outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
                                     id="plan"
                                     onChange={handlePlanChange}
                                     required
@@ -168,11 +180,11 @@ function NewMembership() {
 
                             <div className="grid gap-5 sm:grid-cols-2">
                                 <div>
-                                    <label className="mb-2 block text-sm font-semibold" htmlFor="start-date">
-                                        Start date
+                                    <label className="mb-2 flex items-center gap-2 text-sm font-bold text-slate-800" htmlFor="start-date">
+                                        <FiCalendar aria-hidden="true" className="text-orange-600" /> Start date
                                     </label>
                                     <input
-                                        className="w-full rounded-lg border border-slate-300 px-3 py-3 focus:outline-none focus:ring-2 focus:ring-orange"
+                                        className="min-h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
                                         id="start-date"
                                         onChange={(event) => setStartDate(event.target.value)}
                                         required
@@ -181,11 +193,11 @@ function NewMembership() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="mb-2 block text-sm font-semibold" htmlFor="amount-paid">
-                                        Amount paid
+                                    <label className="mb-2 flex items-center gap-2 text-sm font-bold text-slate-800" htmlFor="amount-paid">
+                                        <FiDollarSign aria-hidden="true" className="text-orange-600" /> Amount paid
                                     </label>
                                     <input
-                                        className="w-full rounded-lg border border-slate-300 px-3 py-3 focus:outline-none focus:ring-2 focus:ring-orange"
+                                        className="min-h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100"
                                         id="amount-paid"
                                         min="0"
                                         onChange={(event) => setAmountPaid(event.target.value)}
@@ -198,38 +210,43 @@ function NewMembership() {
                             </div>
 
                             <button
-                                className="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-ink px-5 font-semibold text-white transition hover:bg-orange disabled:cursor-not-allowed disabled:opacity-50"
+                                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-600 to-orange-500 px-5 font-bold text-white shadow-lg shadow-orange-500/20 transition hover:-translate-y-0.5 hover:shadow-orange-500/30 disabled:cursor-not-allowed disabled:opacity-50"
                                 disabled={saving || !members.length || !plans.length}
                                 type="submit"
                             >
-                                {saving ? "Creating membership..." : "Create membership & QR code"}
+                                {saving ? "Creating membership..." : <>Create membership &amp; QR code <FiArrowRight aria-hidden="true" /></>}
                             </button>
                         </>
                     )}
                 </form>
 
-                <aside className="h-fit rounded-3xl bg-orange/10 p-6">
+                <aside className="h-fit rounded-3xl border border-orange-100 bg-gradient-to-br from-orange-50 to-white p-6 shadow-sm">
+                    <div className="mb-4 flex size-11 items-center justify-center rounded-2xl bg-orange-100 text-orange-700">
+                        <FiInfo aria-hidden="true" size={22} />
+                    </div>
                     <h2 className="text-lg font-bold">What happens next?</h2>
-                    <ul className="mt-4 list-inside list-disc space-y-3 text-sm leading-6 text-slate-700">
-                        <li>The membership is linked to the selected member account.</li>
-                        <li>The plan duration determines the expiry date.</li>
-                        <li>A unique QR code is generated for check-ins.</li>
-                        <li>The member can see the details and QR code on their profile.</li>
+                    <ul className="mt-4 space-y-4 text-sm leading-6 text-slate-700">
+                        <li className="flex gap-3"><FiCheckCircle aria-hidden="true" className="mt-1 shrink-0 text-emerald-600" /> Membership is linked to the selected account.</li>
+                        <li className="flex gap-3"><FiCheckCircle aria-hidden="true" className="mt-1 shrink-0 text-emerald-600" /> Plan duration sets the expiry date.</li>
+                        <li className="flex gap-3"><FiCheckCircle aria-hidden="true" className="mt-1 shrink-0 text-emerald-600" /> A unique QR code is generated for check-ins.</li>
+                        <li className="flex gap-3"><FiCheckCircle aria-hidden="true" className="mt-1 shrink-0 text-emerald-600" /> The member sees everything on their profile.</li>
                     </ul>
                 </aside>
             </div>
 
             {createdMembership && (
-                <section className="mt-8 flex flex-col items-center gap-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 sm:flex-row">
+                <section className="mt-8 flex flex-col items-center gap-5 rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-6 shadow-lg sm:flex-row">
                     {createdMembership.qr_code_image && (
                         <img
                             alt="New membership QR code"
-                            className="w-50 h-65 lg:w-25 lg:h-90 rounded-lg border border-emerald-200 bg-white p-2"
+                            className="size-40 shrink-0 rounded-2xl border border-emerald-200 bg-white p-3 object-contain shadow-sm"
                             src={new URL(createdMembership.qr_code_image, api.defaults.baseURL).toString()}
                         />
                     )}
                     <div>
-                        <h2 className="text-lg font-bold text-emerald-900">Membership created</h2>
+                        <h2 className="flex items-center gap-2 text-lg font-bold text-emerald-900">
+                            <FiCheckCircle aria-hidden="true" /> Membership created
+                        </h2>
                         <p className="mt-1 text-sm text-emerald-800">
                             {selectedMember?.full_name || createdMembership.member_name} ·{" "}
                             {createdMembership.membership_plan_name}
@@ -243,6 +260,7 @@ function NewMembership() {
                     </div>
                 </section>
             )}
+            </div>
         </main>
     );
 }

@@ -1,20 +1,24 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.jsx";
 import AuthForm from "../Components/AuthForm.jsx";
+import { hasCompletedProfile } from "../context/authUtils.js";
 import LayoutStructure from "../Components/Landing/Layout/LayoutStructure.jsx";
 import NewMembership from "../pages/NewMembership.jsx";
+import CompleteProfile from "../pages/CompleteProfile.jsx";
 import Profile from "../pages/Profile.jsx";
 import ScanMembership from "../pages/ScanMembership.jsx";
 import ProtectedRoute from "./ProtectedRoutes.jsx";
 
 function AppRoutes() {
-    const { user, authReady } = useAuth();
+    const { authReady, isSignedIn, user } = useAuth();
     const landing = authReady
-        ? user ? <Navigate to="/profile" replace /> : <LayoutStructure />
+        ? isSignedIn
+            ? <Navigate to={hasCompletedProfile(user) ? "/profile" : "/complete-profile"} replace />
+            : <LayoutStructure />
         : <p className="mx-auto max-w-5xl px-5 py-16 text-center">Loading...</p>;
     const authEntry = (initialMode) => !authReady
         ? <p className="mx-auto max-w-5xl px-5 py-16 text-center">Checking your session...</p>
-        : user
+        : isSignedIn
             ? <Navigate to="/profile" replace />
             : <AuthForm initialMode={initialMode} />;
 
@@ -24,6 +28,14 @@ function AppRoutes() {
             <Route path="/landingPage" element={landing} />
             <Route path="/login" element={authEntry("login")} />
             <Route path="/register" element={authEntry("register")} />
+            <Route
+                path="/complete-profile"
+                element={
+                    <ProtectedRoute allowIncompleteProfile>
+                        <CompleteProfile />
+                    </ProtectedRoute>
+                }
+            />
             <Route
                 path="/profile"
                 element={
