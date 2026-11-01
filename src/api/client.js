@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || "https://config-backend-tf84.onrender.com/";
+const baseURL = import.meta.env.VITE_API_LOCAL_URL || "http://127.0.0.1:8000/"
+//  "https://config-backend-tf84.onrender.com/";
 const ACCESS_TOKEN_KEY = "rhema_access_token";
 const REFRESH_TOKEN_KEY = "rhema_refresh_token";
 const refreshUrl = new URL("/users/auth/token/refresh/", baseURL).toString();

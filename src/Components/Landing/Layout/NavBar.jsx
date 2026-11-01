@@ -90,6 +90,9 @@ function NavBar() {
                             <a className="py-3 md:py-0" href="/#services" onClick={closeMenu}>
                                 Training
                             </a>
+                            <a className="py-3 md:py-0" href="/#pricing" onClick={closeMenu}>
+                                Membership
+                            </a>
                             <a className="py-3 md:py-0" href="/#gallery" onClick={closeMenu}>
                                 The club
                             </a>

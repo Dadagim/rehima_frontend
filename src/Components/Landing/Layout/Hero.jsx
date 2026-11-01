@@ -11,7 +11,7 @@ function Hero() {
                 src={heroImage}
             /> */}
             <div className="hero-image">
-                <video src={video} loop muted autoPlay />
+                <video autoPlay loop muted playsInline src={video} />
             </div>
             <div aria-hidden="true" className="hero-shade" />
             <div className="hero-content">

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import aboutImage from "../../../assets/about.png";
 import coachImage from "../../../assets/choach2.png";
 import logoImage from "../../../assets/rhema-logo.svg";
+import focusVideo from "../../../assets/mysecond.mp4";
+import boxingVideo from "../../../assets/myfirst.mp4";
 
 const training = [
     {
@@ -39,21 +41,22 @@ const training = [
     },
 ];
 
-const photos = [
+const galleryMedia = [
     {
+        type: "video",
+        src: focusVideo,
+        label: "Keep Your Focus",
+    },
+    {
+        type: "video",
+        src: boxingVideo,
+        label: "Power With Purpose",
+    },
+    {
+        type: "image",
         image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1400&q=88",
         alt: "Athlete training with weights in a gym",
         label: "Strength in every rep",
-    },
-    {
-        image: "https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=1200&q=88",
-        alt: "Athlete working through a fitness session",
-        label: "Find your rhythm",
-    },
-    {
-        image: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=1200&q=88",
-        alt: "Training space ready for a workout",
-        label: "Show up stronger",
     },
 ];
 
@@ -168,9 +171,21 @@ function Gallery() {
                 </div>
 
                 <div className="gallery-grid">
-                    {photos.map(({ image, alt, label }, index) => (
+                    {galleryMedia.map(({ type, src, image, alt, label }, index) => (
                         <figure className="gallery-item" key={label}>
-                            <img alt={alt} loading="lazy" src={image} />
+                            {type === "video" ? (
+                                <video
+                                    aria-hidden="true"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    preload="metadata"
+                                    src={src}
+                                />
+                            ) : (
+                                <img alt={alt} loading="lazy" src={image} />
+                            )}
                             <figcaption className="gallery-label">
                                 <span className="gallery-caption-copy">
                                     <span className="gallery-photo-number">RHEMA / 0{index + 1}</span>
