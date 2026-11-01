@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import aboutImage from "../../../assets/about.png";
 import coachImage from "../../../assets/choach2.png";
 import logoImage from "../../../assets/rhema-logo.svg";
-import focusVideo from "../../../assets/mysecond.mp4";
-import boxingVideo from "../../../assets/myfirst.mp4";
+import boxingMindsetVideo from "../../../assets/rhema-boxing-mindset.mp4";
+import gymDayVideo from "../../../assets/rhema-gym-day.mp4";
 
 const training = [
     {
@@ -44,13 +44,13 @@ const training = [
 const galleryMedia = [
     {
         type: "video",
-        src: focusVideo,
-        label: "Keep Your Focus",
+        src: boxingMindsetVideo,
+        label: "The Door Is Never Locked",
     },
     {
         type: "video",
-        src: boxingVideo,
-        label: "Power With Purpose",
+        src: gymDayVideo,
+        label: "What A Day!",
     },
     {
         type: "image",
